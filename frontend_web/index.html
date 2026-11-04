@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duolink Finance — Professional Financial Management & Project Accounting</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body>
+
+    <!-- 0. WELCOME / SPLASH SCREEN (Shown on First Site Load for 3-4 Seconds Before Login) -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo-wrapper">
+                <img src="assets/logo.png" alt="Duolink Finance Logo" class="splash-logo">
+                <div class="splash-glow"></div>
+            </div>
+            <h1 class="splash-title">Welcome to <br><span>DUOLINK FINANCE</span></h1>
+            <p class="splash-subtitle" id="splash-user-welcome">Secure Corporate Financial & Project Accounting</p>
+            <div class="splash-loader-bar">
+                <div class="splash-loader-progress"></div>
+            </div>
+            <div class="splash-status-text">Loading Duolink Finance Portal...</div>
+        </div>
+    </div>
+
+    <!-- 1. LOGIN SCREEN -->
+    <div id="login-screen" class="login-container" style="display: none;">
+        <div class="login-card">
+            <div class="login-brand">
+                <img src="assets/logo.png" alt="Duolink Finance Logo" class="login-brand-img">
+                <h1 class="login-title">Welcome to DUOLINK FINANCE</h1>
+                <p class="login-subtitle">Secure Corporate Financial & Project Accounting</p>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="login-email">Email Address</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="name@duolink.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" id="btn-login" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">
+                    Sign In to Portal
+                </button>
+            </form>
+
+            <div class="quick-login-pills">
+                <div class="quick-login-title">Quick Demo Login:</div>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="quick-login-btn" onclick="quickFill('admin@duolink.com', 'Admin@123')">
+                        👑 Admin (Full Access)
+                    </button>
+                    <button type="button" class="quick-login-btn" onclick="quickFill('user@duolink.com', 'User@123')">
+                        👤 User (Alex Rivera)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MAIN APP LAYOUT (When Authenticated) -->
+    <div id="app-screen" class="app-layout" style="display: none;">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="app-sidebar">
+            <div class="brand-header">
+                <img src="assets/logo.png" alt="Duolink Finance Logo" class="brand-logo-img">
+                <div class="brand-title">DUOLINK <span>FINANCE</span></div>
+            </div>
+
+            <ul class="nav-links">
+                <li class="nav-category">Main Menu</li>
+                <li class="nav-item">
+                    <a class="nav-link active" data-view="dashboard">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-view="projects">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                        Projects
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-view="expenses">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                        Expenses
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-view="income">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Income & Advances
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-view="invoices">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        Bills & Invoices
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-view="partners">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        Partner
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-view="attachments">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                        Proof Attachments
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-view="reports">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                        Reports & Analytics
+                    </a>
+                </li>
+
+                <li class="nav-category admin-only">Administration</li>
+                <li class="nav-item admin-only">
+                    <a class="nav-link" data-view="users">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        User Management
+                    </a>
+                </li>
+
+                <li class="nav-category">Account</li>
+                <li class="nav-item">
+                    <a class="nav-link" data-view="profile">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        Profile & Security
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-user">
+                <div class="user-meta">
+                    <div class="user-avatar" id="sidebar-avatar">A</div>
+                    <div class="user-info">
+                        <div class="user-name" id="sidebar-user-name">Loading...</div>
+                        <span class="user-role-badge" id="sidebar-role-badge">Role</span>
+                    </div>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="logout()" title="Logout">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            <!-- Top Header -->
+            <header class="top-header">
+                <h2 class="header-title" id="page-title">Dashboard Overview</h2>
+                <div class="header-actions">
+                    <button class="btn btn-outline btn-sm" id="btn-quick-switch-role" onclick="switchTestRole()">
+                        🔄 Switch to User
+                    </button>
+                    <button class="btn btn-primary btn-sm" onclick="openExpenseModal()">
+                        + Add Expense
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="openIncomeModal()">
+                        + Add Income
+                    </button>
+                </div>
+            </header>
+
+            <!-- Main Content Container -->
+            <main class="content-body">
+
+                <!-- 1. DASHBOARD VIEW -->
+                <div id="view-dashboard" class="page-view">
+                    <div class="stats-grid">
+                        <div class="stat-card income">
+                            <div class="stat-header">
+                                <span class="stat-label">Total Income</span>
+                                <div class="stat-icon">₹</div>
+                            </div>
+                            <div class="stat-value" id="stat-total-income">₹0.00</div>
+                            <div class="stat-footer">Direct payments & advances</div>
+                        </div>
+
+                        <div class="stat-card expense">
+                            <div class="stat-header">
+                                <span class="stat-label">Total Expenses</span>
+                                <div class="stat-icon">📉</div>
+                            </div>
+                            <div class="stat-value" id="stat-total-expenses">₹0.00</div>
+                            <div class="stat-footer">Operations, payroll & projects</div>
+                        </div>
+
+                        <div class="stat-card balance">
+                            <div class="stat-header">
+                                <span class="stat-label">Available Balance</span>
+                                <div class="stat-icon">🏦</div>
+                            </div>
+                            <div class="stat-value" id="stat-available-balance">₹0.00</div>
+                            <div class="stat-footer">Total Income − Total Expenses</div>
+                        </div>
+
+                        <div class="stat-card advance">
+                            <div class="stat-header">
+                                <span class="stat-label">Advances Received</span>
+                                <div class="stat-icon">⏳</div>
+                            </div>
+                            <div class="stat-value" id="stat-advances">₹0.00</div>
+                            <div class="stat-footer">Project initial advances</div>
+                        </div>
+
+                        <div class="stat-card pending">
+                            <div class="stat-header">
+                                <span class="stat-label">Pending Client Payments</span>
+                                <div class="stat-icon">📑</div>
+                            </div>
+                            <div class="stat-value" id="stat-pending-payments">₹0.00</div>
+                            <div class="stat-footer">Outstanding bill balances</div>
+                        </div>
+                    </div>
+
+                    <!-- Secondary Stats Bar -->
+                    <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+                        <div class="card" style="flex: 1; margin-bottom: 0;">
+                            <div class="card-body" style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <div style="font-size: 12px; color: var(--text-secondary); font-weight: 700;">TOTAL PROJECT INCOME</div>
+                                    <div style="font-size: 20px; font-weight: 800; color: var(--accent-green);" id="stat-project-income">₹0.00</div>
+                                </div>
+                                <div style="font-size: 24px;">📁</div>
+                            </div>
+                        </div>
+
+                        <div class="card" style="flex: 1; margin-bottom: 0;">
+                            <div class="card-body" style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <div style="font-size: 12px; color: var(--text-secondary); font-weight: 700;">TOTAL PROJECT EXPENSES</div>
+                                    <div style="font-size: 20px; font-weight: 800; color: var(--accent-red);" id="stat-project-expenses">₹0.00</div>
+                                </div>
+                                <div style="font-size: 24px;">📊</div>
+                            </div>
+                        </div>
+
+                        <div class="card" style="flex: 1; margin-bottom: 0;">
+                            <div class="card-body" style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <div style="font-size: 12px; color: var(--text-secondary); font-weight: 700;">PROJECT NET PROFIT</div>
+                                    <div style="font-size: 20px; font-weight: 800; color: var(--primary-800);" id="stat-project-profit">₹0.00</div>
+                                </div>
+                                <div style="font-size: 24px;">🚀</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity Section -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Recent Income Received</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="navigateTo('income')">View All</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Client</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-recent-income">
+                                        <tr><td colspan="4" style="text-align: center;">Loading...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Recent Expenses</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="navigateTo('expenses')">View All</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Category</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-recent-expenses">
+                                        <tr><td colspan="4" style="text-align: center;">Loading...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. PROJECTS LIST VIEW -->
+                <div id="view-projects" class="page-view" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Company Projects & Client Accounts</h3>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                                    Track contract values, advance payments, project-wise income & expenses
+                                </p>
+                            </div>
+                            <button class="btn btn-primary btn-sm" id="btn-add-project" onclick="openProjectModal()">
+                                + Add Project
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Project Code</th>
+                                        <th>Project Name</th>
+                                        <th>Client</th>
+                                        <th>Status</th>
+                                        <th>Total Amount</th>
+                                        <th>Income Recv.</th>
+                                        <th>Expenses</th>
+                                        <th>Profit</th>
+                                        <th>Pending</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-projects">
+                                    <tr><td colspan="10" style="text-align: center;">Loading projects...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. PROJECT DETAILS VIEW -->
+                <div id="view-project-details" class="page-view" style="display: none;">
+                    <div style="margin-bottom: 16px;">
+                        <button class="btn btn-secondary btn-sm" onclick="navigateTo('projects')">
+                            ← Back to Projects
+                        </button>
+                    </div>
+
+                    <div id="project-details-content">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- 4. EXPENSES VIEW -->
+                <div id="view-expenses" class="page-view" style="display: none;">
+                    <div class="card" style="margin-bottom: 16px;">
+                        <div class="card-body" style="padding: 16px 20px;">
+                            <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end;">
+                                <div style="flex: 1; min-width: 140px;">
+                                    <label class="form-label">Category</label>
+                                    <select id="filter-expense-category" class="form-control" onchange="loadExpenses()">
+                                        <option value="All">All Categories</option>
+                                    </select>
+                                </div>
+                                <div style="flex: 1; min-width: 140px;">
+                                    <label class="form-label">Start Date</label>
+                                    <input type="date" id="filter-expense-start" class="form-control" onchange="loadExpenses()">
+                                </div>
+                                <div style="flex: 1; min-width: 140px;">
+                                    <label class="form-label">End Date</label>
+                                    <input type="date" id="filter-expense-end" class="form-control" onchange="loadExpenses()">
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary" onclick="openExpenseModal()">+ Add Expense</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Expense Transactions</h3>
+                                <span id="expense-total-display" class="badge badge-red" style="font-size: 13px; margin-top: 4px;">
+                                    Total: ₹0.00
+                                </span>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="exportCsv('expenses')">
+                                📥 Export CSV
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Date</th>
+                                        <th>Category</th>
+                                        <th>Description</th>
+                                        <th>Amount (₹)</th>
+                                        <th>Payment Method</th>
+                                        <th>Project</th>
+                                        <th>Paid By</th>
+                                        <th>Receipt</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-expenses">
+                                    <tr><td colspan="10" style="text-align: center;">Loading expenses...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. INCOME & ADVANCES VIEW -->
+                <div id="view-income" class="page-view" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Income & Advance Payments</h3>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                                    Tracks cash inflows, client advances, and invoice settlements without double counting.
+                                </p>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-secondary btn-sm" onclick="exportCsv('income')">
+                                    📥 Export CSV
+                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="openIncomeModal()">
+                                    + Add Income
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Date</th>
+                                        <th>Client</th>
+                                        <th>Amount (₹)</th>
+                                        <th>Type</th>
+                                        <th>Project Type</th>
+                                        <th>Payment Method</th>
+                                        <th>Project Details</th>
+                                        <th>Proof</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-income">
+                                    <tr><td colspan="9" style="text-align: center;">Loading income records...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. INVOICES & BILLS VIEW -->
+                <div id="view-invoices" class="page-view" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Duolink Bill & Invoice Generation</h3>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                                    Generate official PDF invoices with advance deductions, terms, and balance tracking.
+                                </p>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="openInvoiceModal()">
+                                + Generate New Invoice
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Invoice #</th>
+                                        <th>Date</th>
+                                        <th>Project</th>
+                                        <th>Client</th>
+                                        <th>Total (₹)</th>
+                                        <th>Advance Ded. (₹)</th>
+                                        <th>Paid (₹)</th>
+                                        <th>Remaining (₹)</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-invoices">
+                                    <tr><td colspan="10" style="text-align: center;">Loading invoices...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. PARTNER MODULE VIEW (R, V, D) -->
+                <div id="view-partners" class="page-view" style="display: none;">
+                    
+                    <!-- Top Action Bar -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <h2 style="font-size: 20px; font-weight: 800; color: var(--primary-900);">Partner Accounts & 3-Way Split</h2>
+                            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">
+                                Automated 3-way distribution (e.g. ₹10,000 / 3 = ₹3,333.33) and individual partner income & expenses for R, V, D.
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="btn btn-primary" onclick="openPartnerModal()">
+                                + Add Income & Expenses
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4 Summary KPI Cards: Combined + Partner R + Partner V + Partner D -->
+                    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                        
+                        <!-- Combined Partnership Card -->
+                        <div class="partner-card">
+                            <div class="partner-card-header">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div class="partner-avatar combined">🤝</div>
+                                    <div>
+                                        <div style="font-weight: 800; font-size: 15px; color: var(--primary-900);">Partnership Total</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Equal 3-Way Distribution</div>
+                                    </div>
+                                </div>
+                                <span class="badge badge-blue">R • V • D</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12.5px;">
+                                <span style="color: var(--text-secondary);">Total Income:</span>
+                                <span style="font-weight: 700; color: var(--accent-green);" id="partner-comb-income">₹0.00</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12.5px;">
+                                <span style="color: var(--text-secondary);">Total Expenses:</span>
+                                <span style="font-weight: 700; color: var(--accent-red);" id="partner-comb-expense">₹0.00</span>
+                            </div>
+                            <div style="padding-top: 10px; border-top: 1px dashed var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: 700; font-size: 13px;">Net Profit:</span>
+                                <span style="font-size: 17px; font-weight: 800; color: var(--primary-800);" id="partner-comb-net">₹0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Partner R Card -->
+                        <div class="partner-card">
+                            <div class="partner-card-header">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div class="partner-avatar r">R</div>
+                                    <div>
+                                        <div style="font-weight: 800; font-size: 15px; color: var(--primary-900);">Partner R</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Share: 33.33% + Individual</div>
+                                    </div>
+                                </div>
+                                <span class="badge" style="background:#EDE9FE; color:#6D28D9;">Partner R</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12.5px;">
+                                <span style="color: var(--text-secondary);">Income Share:</span>
+                                <span style="font-weight: 700; color: var(--accent-green);" id="partner-r-income">₹0.00</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12.5px;">
+                                <span style="color: var(--text-secondary);">Expense Share:</span>
+                                <span style="font-weight: 700; color: var(--accent-red);" id="partner-r-expense">₹0.00</span>
+                            </div>
+                            <div style="padding-top: 10px; border-top: 1px dashed var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: 700; font-size: 13px;">Net Balance:</span>
+                                <span style="font-size: 17px; font-weight: 800;" id="partner-r-net">₹0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Partner V Card -->
+                        <div class="partner-card">
+                            <div class="partner-card-header">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div class="partner-avatar v">V</div>
+                                    <div>
+                                        <div style="font-weight: 800; font-size: 15px; color: var(--primary-900);">Partner V</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Share: 33.33% + Individual</div>
+                                    </div>
+                                </div>
+                                <span class="badge" style="background:#D1FAE5; color:#065F46;">Partner V</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12.5px;">
+                                <span style="color: var(--text-secondary);">Income Share:</span>
+                                <span style="font-weight: 700; color: var(--accent-green);" id="partner-v-income">₹0.00</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12.5px;">
+                                <span style="color: var(--text-secondary);">Expense Share:</span>
+                                <span style="font-weight: 700; color: var(--accent-red);" id="partner-v-expense">₹0.00</span>
+                            </div>
+                            <div style="padding-top: 10px; border-top: 1px dashed var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: 700; font-size: 13px;">Net Balance:</span>
+                                <span style="font-size: 17px; font-weight: 800;" id="partner-v-net">₹0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Partner D Card -->
+                        <div class="partner-card">
+                            <div class="partner-card-header">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div class="partner-avatar d">D</div>
+                                    <div>
+                                        <div style="font-weight: 800; font-size: 15px; color: var(--primary-900);">Partner D</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Share: 33.33% + Individual</div>
+                                    </div>
+                                </div>
+                                <span class="badge" style="background:#FEF3C7; color:#92400E;">Partner D</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12.5px;">
+                                <span style="color: var(--text-secondary);">Income Share:</span>
+                                <span style="font-weight: 700; color: var(--accent-green);" id="partner-d-income">₹0.00</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12.5px;">
+                                <span style="color: var(--text-secondary);">Expense Share:</span>
+                                <span style="font-weight: 700; color: var(--accent-red);" id="partner-d-expense">₹0.00</span>
+                            </div>
+                            <div style="padding-top: 10px; border-top: 1px dashed var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: 700; font-size: 13px;">Net Balance:</span>
+                                <span style="font-size: 17px; font-weight: 800;" id="partner-d-net">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Live 3-Way Split Calculator Bar -->
+                    <div class="partner-live-calculator">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                            <div>
+                                <h4 style="font-size: 15px; font-weight: 800; color: var(--primary-900); display: flex; align-items: center; gap: 8px;">
+                                    ⚡ Live 3-Way Split Calculator (e.g. 10000 / 3 = 3333.33)
+                                </h4>
+                                <p style="font-size: 12px; color: var(--text-secondary);">
+                                    Type any amount below to immediately calculate the equal division among partners R, V, and D.
+                                </p>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <label style="font-size: 13px; font-weight: 700; color: var(--text-primary);">Enter Amount (₹):</label>
+                                <input type="number" id="quick-split-input" class="form-control" style="width: 170px; font-weight: 700; font-size: 15px;" placeholder="e.g. 10000" value="10000" oninput="updateQuickSplitCalc()">
+                            </div>
+                        </div>
+
+                        <div class="calc-split-box">
+                            <div class="calc-split-item">
+                                <div class="partner-tag" style="color: #6D28D9;">Partner R (1/3 Share)</div>
+                                <div class="partner-val" id="calc-val-r" style="color: #6D28D9;">₹3,333.33</div>
+                            </div>
+                            <div class="calc-split-item">
+                                <div class="partner-tag" style="color: #059669;">Partner V (1/3 Share)</div>
+                                <div class="partner-val" id="calc-val-v" style="color: #059669;">₹3,333.33</div>
+                            </div>
+                            <div class="calc-split-item">
+                                <div class="partner-tag" style="color: #D97706;">Partner D (1/3 Share)</div>
+                                <div class="partner-val" id="calc-val-d" style="color: #D97706;">₹3,333.34</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Partner Transactions Ledger Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Partnership Transactions Ledger</h3>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                                    Complete audit trail of 3-way split and individual amounts for R, V, and D
+                                </p>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-primary btn-sm" onclick="openPartnerModal()">
+                                    + Add Income & Expenses
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Filter Pills -->
+                        <div style="padding: 16px 24px 0 24px;">
+                            <div class="filter-pills">
+                                <button class="filter-pill active" onclick="setPartnerFilter('all', this)">All Transactions</button>
+                                <button class="filter-pill" onclick="setPartnerFilter('split', this)">3-Way Split Only</button>
+                                <button class="filter-pill" onclick="setPartnerFilter('individual', this)">Individual Only</button>
+                                <button class="filter-pill" onclick="setPartnerFilter('R', this)">Partner R</button>
+                                <button class="filter-pill" onclick="setPartnerFilter('V', this)">Partner V</button>
+                                <button class="filter-pill" onclick="setPartnerFilter('D', this)">Partner D</button>
+                                <button class="filter-pill" onclick="setPartnerFilter('income', this)">Income Only</button>
+                                <button class="filter-pill" onclick="setPartnerFilter('expense', this)">Expenses Only</button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Distribution</th>
+                                        <th>Total (₹)</th>
+                                        <th>Share R (₹)</th>
+                                        <th>Share V (₹)</th>
+                                        <th>Share D (₹)</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-partner-transactions">
+                                    <tr><td colspan="10" style="text-align: center;">Loading partner transactions...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. PROOF ATTACHMENTS VIEW -->
+                <div id="view-attachments" class="page-view" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Proof Documents & Receipt Attachments</h3>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                                    Audit repository of uploaded payment vouchers, expense receipts, and contracts.
+                                </p>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="openAttachmentModal()">
+                                + Upload Proof Document
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>File Name</th>
+                                        <th>Entity</th>
+                                        <th>File Type</th>
+                                        <th>Size</th>
+                                        <th>Uploaded By</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-attachments">
+                                    <tr><td colspan="7" style="text-align: center;">Loading attachments...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. REPORTS & ANALYTICS VIEW -->
+                <div id="view-reports" class="page-view" style="display: none;">
+                    <div class="card" style="margin-bottom: 24px;">
+                        <div class="card-header">
+                            <h3 class="card-title">Monthly Cashflow Performance</h3>
+                            <div style="display: flex; gap: 8px;">
+                                <select id="report-year" class="form-control" style="width: 100px;" onchange="loadReports()">
+                                    <option value="2026">2026</option>
+                                    <option value="2025">2025</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Month</th>
+                                            <th>Income (₹)</th>
+                                            <th>Expenses (₹)</th>
+                                            <th>Net Cashflow (₹)</th>
+                                            <th>Trend</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-monthly-reports">
+                                        <tr><td colspan="5" style="text-align: center;">Loading monthly reports...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Project Profit & Loss Statements</h3>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Project</th>
+                                            <th>Income (₹)</th>
+                                            <th>Expenses (₹)</th>
+                                            <th>P&L (₹)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-project-pl">
+                                        <tr><td colspan="4" style="text-align: center;">Loading...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Expense Category Distribution</h3>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Count</th>
+                                            <th>Total Spend (₹)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-category-analysis">
+                                        <tr><td colspan="3" style="text-align: center;">Loading...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. USER MANAGEMENT VIEW (Admin Only) -->
+                <div id="view-users" class="page-view" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">User Accounts & Access Control</h3>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                                    Strict Role-Based Access Control: Exactly two roles (Admin & User).
+                                </p>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="openUserModal()">
+                                + Create New User
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Can Create Project</th>
+                                        <th>Can Edit Records</th>
+                                        <th>Can Delete</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-users">
+                                    <tr><td colspan="8" style="text-align: center;">Loading users...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10. PROFILE & PASSWORD VIEW -->
+                <div id="view-profile" class="page-view" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">User Profile Details</h3>
+                            </div>
+                            <div class="card-body">
+                                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                                    <div class="user-avatar" style="width: 54px; height: 54px; font-size: 22px;" id="profile-avatar">A</div>
+                                    <div>
+                                        <div style="font-size: 18px; font-weight: 800;" id="profile-name">User Name</div>
+                                        <div style="font-size: 13px; color: var(--text-secondary);" id="profile-email">email@duolink.com</div>
+                                        <span class="user-role-badge" id="profile-role">Role</span>
+                                    </div>
+                                </div>
+
+                                <div style="background: var(--bg-main); padding: 16px; border-radius: var(--radius-md); font-size: 13px;">
+                                    <div style="font-weight: 700; margin-bottom: 8px; color: var(--primary-900);">Active System Permissions:</div>
+                                    <ul style="list-style: none; line-height: 1.8;">
+                                        <li id="perm-create-proj">✓ Project Creation: <b>Checking...</b></li>
+                                        <li id="perm-edit-rec">✓ Edit Records: <b>Checking...</b></li>
+                                        <li id="perm-del-rec">✓ Delete Records: <b>Checking...</b></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Change Password</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="form-change-password">
+                                    <div class="form-group">
+                                        <label class="form-label">Current Password</label>
+                                        <input type="password" id="pw-current" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">New Password</label>
+                                        <input type="password" id="pw-new" class="form-control" required minlength="6">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Confirm New Password</label>
+                                        <input type="password" id="pw-confirm" class="form-control" required minlength="6">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                                        Update Password
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+
+    <!-- 1. Add/Edit Project Modal -->
+    <div id="modal-project" class="modal-overlay">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-project-title">Add New Project</h3>
+                <button class="modal-close" onclick="closeModal('modal-project')">&times;</button>
+            </div>
+            <form id="form-project">
+                <div class="modal-body">
+                    <input type="hidden" id="proj-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Project Name *</label>
+                            <input type="text" id="proj-name" class="form-control" placeholder="e.g. Enterprise Cloud Platform" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Client Name *</label>
+                            <input type="text" id="proj-client" class="form-control" placeholder="e.g. Apex Global Corp" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Client Email</label>
+                            <input type="email" id="proj-client-email" class="form-control" placeholder="billing@client.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Client Phone</label>
+                            <input type="text" id="proj-client-phone" class="form-control" placeholder="+1-555-0199">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Total Amount (₹) *</label>
+                            <input type="number" step="0.01" id="proj-contract" class="form-control" placeholder="0.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Advance Received (₹)</label>
+                            <input type="number" step="0.01" id="proj-advance" class="form-control" placeholder="0.00" value="0.00">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Start Date *</label>
+                        <input type="date" id="proj-date" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Project Description</label>
+                        <textarea id="proj-desc" class="form-control" rows="2" placeholder="Summary of scope & deliverables..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-project')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Add Expense Modal -->
+    <div id="modal-expense" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Record Expense</h3>
+                <button class="modal-close" onclick="closeModal('modal-expense')">&times;</button>
+            </div>
+            <form id="form-expense">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Category *</label>
+                            <select id="exp-category" class="form-control" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Amount (₹) *</label>
+                            <input type="number" step="0.01" id="exp-amount" class="form-control" placeholder="0.00" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Expense Description *</label>
+                        <input type="text" id="exp-desc" class="form-control" placeholder="e.g. AWS Cloud Hosting Services" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Expense Date *</label>
+                            <input type="date" id="exp-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Payment Method *</label>
+                            <select id="exp-method" class="form-control" required>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                                <option value="Credit Card">Credit Card</option>
+                                <option value="Cash">Cash</option>
+                                <option value="UPI / Online">UPI / Online</option>
+                                <option value="Cheque">Cheque</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Link to Project (Optional)</label>
+                            <select id="exp-project" class="form-control">
+                                <option value="">None (Company Operating Expense)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Paid By *</label>
+                            <input type="text" id="exp-paid-by" class="form-control" placeholder="e.g. Corporate Card *4421" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Receipt / Voucher Attachment (PDF or Image)</label>
+                        <input type="file" id="exp-receipt" class="form-control" accept=".jpg,.jpeg,.png,.webp,.pdf">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Notes</label>
+                        <input type="text" id="exp-notes" class="form-control" placeholder="Additional notes...">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-expense')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Expense</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. Add Income Modal -->
+    <div id="modal-income" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Income</h3>
+                <button class="modal-close" onclick="closeModal('modal-income')">&times;</button>
+            </div>
+            <form id="form-income">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Client Name *</label>
+                            <input type="text" id="inc-client" class="form-control" placeholder="e.g. Vertex Capital" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Payment Amount (₹) *</label>
+                            <input type="number" step="0.01" id="inc-amount" class="form-control" placeholder="0.00" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Payment Date *</label>
+                            <input type="date" id="inc-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Payment Method *</label>
+                            <select id="inc-method" class="form-control" required>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                                <option value="Credit Card">Credit Card</option>
+                                <option value="UPI / Online">UPI / Online</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Cheque">Cheque</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Project Type *</label>
+                        <input type="text" id="inc-project-type" class="form-control" placeholder="Enter project type (e.g. ERP, Website, App, MSS...)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Project Details</label>
+                        <textarea id="inc-project-details" class="form-control" rows="2" placeholder="Details regarding project scope, deliverables, or milestones..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Proof of Payment Attachment</label>
+                        <input type="file" id="inc-proof" class="form-control" accept=".jpg,.jpeg,.png,.webp,.pdf">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-income')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Income</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. Generate Invoice Modal -->
+    <div id="modal-invoice" class="modal-overlay">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 class="modal-title">Generate Duolink Invoice</h3>
+                <button class="modal-close" onclick="closeModal('modal-invoice')">&times;</button>
+            </div>
+            <form id="form-invoice">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Project *</label>
+                            <select id="inv-project" class="form-control" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Invoice Date *</label>
+                            <input type="date" id="inv-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Payment Due Date</label>
+                            <input type="date" id="inv-due-date" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Line Items Breakdown *</span>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="addInvoiceItemRow()">+ Add Item Row</button>
+                        </label>
+                        <div id="invoice-items-container">
+                            <!-- Line item rows inserted dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Advance Deduction (₹)</label>
+                            <input type="number" step="0.01" id="inv-advance-ded" class="form-control" value="0.00" onchange="calculateInvoiceTotal()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Net Balance Due to Client (₹)</label>
+                            <input type="text" id="inv-calculated-net" class="form-control" readonly style="font-weight: 800; background: var(--bg-main);" value="₹0.00">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Payment Terms</label>
+                        <input type="text" id="inv-terms" class="form-control" value="Payment is due within 15 days of invoice date. Duolink Finance Corp.">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-invoice')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Generate Official Bill</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 5. Record Invoice Payment Modal -->
+    <div id="modal-invoice-payment" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Record Invoice Payment</h3>
+                <button class="modal-close" onclick="closeModal('modal-invoice-payment')">&times;</button>
+            </div>
+            <form id="form-invoice-payment">
+                <div class="modal-body">
+                    <input type="hidden" id="inv-pay-id">
+                    <div class="form-group">
+                        <label class="form-label">Invoice Reference</label>
+                        <input type="text" id="inv-pay-num" class="form-control" readonly style="background: var(--bg-main); font-weight: 700;">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Payment Amount (₹) *</label>
+                            <input type="number" step="0.01" id="inv-pay-amount" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Payment Date *</label>
+                            <input type="date" id="inv-pay-date" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Payment Method *</label>
+                        <select id="inv-pay-method" class="form-control" required>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="UPI / Online">UPI / Online</option>
+                            <option value="Cheque">Cheque</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction Reference #</label>
+                        <input type="text" id="inv-pay-ref" class="form-control" placeholder="e.g. ACH-9921">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-invoice-payment')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Settlement</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 6. User Management Modal (Admin only) -->
+    <div id="modal-user" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Create User Account</h3>
+                <button class="modal-close" onclick="closeModal('modal-user')">&times;</button>
+            </div>
+            <form id="form-user">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" id="user-name" class="form-control" placeholder="e.g. David Miller" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address *</label>
+                        <input type="email" id="user-email" class="form-control" placeholder="david@duolink.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Initial Password *</label>
+                        <input type="password" id="user-password" class="form-control" placeholder="••••••••" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Role (Strictly Two Roles) *</label>
+                        <select id="user-role" class="form-control" required>
+                            <option value="User">User (Restricted Access)</option>
+                            <option value="Admin">Admin (Full Control)</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-top: 16px; background: var(--bg-main); padding: 12px; border-radius: var(--radius-md);">
+                        <div style="font-size: 12px; font-weight: 700; margin-bottom: 8px;">Granular User Permissions:</div>
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 6px;">
+                            <input type="checkbox" id="user-can-create-proj"> Can Create Projects
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 6px;">
+                            <input type="checkbox" id="user-can-edit"> Can Edit Expense Records
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px;">
+                            <input type="checkbox" id="user-can-delete"> Can Delete Expense Records
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-user')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 7. Upload Proof Document Modal -->
+    <div id="modal-attachment" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Upload Proof Document</h3>
+                <button class="modal-close" onclick="closeModal('modal-attachment')">&times;</button>
+            </div>
+            <form id="form-attachment">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Entity Association *</label>
+                        <select id="att-entity-type" class="form-control" required onchange="updateAttachmentEntityOptions()">
+                            <option value="project">Project Document</option>
+                            <option value="expense">Expense Receipt</option>
+                            <option value="invoice">Invoice / Bill</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Select Entity Record *</label>
+                        <select id="att-entity-id" class="form-control" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Select File (PDF, PNG, JPG, DOC) *</label>
+                        <input type="file" id="att-file" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-attachment')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Upload Attachment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 8. Partner Transaction Modal -->
+    <div id="modal-partner" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-partner-title">Add Income & Expenses</h3>
+                <button class="modal-close" onclick="closeModal('modal-partner')">&times;</button>
+            </div>
+            <form id="form-partner">
+                <input type="hidden" id="ptr-entry-type" value="Income">
+                <input type="hidden" id="ptr-split-type" value="Split">
+                
+                <div class="modal-body">
+                    <!-- 4-in-1 Process Grid Selector -->
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label class="form-label">Select Process (4-in-1) *</label>
+                        <div class="partner-mode-grid">
+                            <div class="partner-mode-card active" id="card-mode-income-split" onclick="setPartner4In1Mode('Income', 'Split')">
+                                <div class="mode-icon">💰</div>
+                                <div class="mode-info">
+                                    <div class="mode-name">3-Way Split Income</div>
+                                    <div class="mode-desc">Divided into 3 for R, V, D</div>
+                                </div>
+                            </div>
+                            <div class="partner-mode-card" id="card-mode-income-individual" onclick="setPartner4In1Mode('Income', 'Individual')">
+                                <div class="mode-icon">👤</div>
+                                <div class="mode-info">
+                                    <div class="mode-name">Individual Income</div>
+                                    <div class="mode-desc">100% credited to one partner</div>
+                                </div>
+                            </div>
+                            <div class="partner-mode-card" id="card-mode-expense-split" onclick="setPartner4In1Mode('Expense', 'Split')">
+                                <div class="mode-icon">📉</div>
+                                <div class="mode-info">
+                                    <div class="mode-name">3-Way Split Expense</div>
+                                    <div class="mode-desc">Shared cost into 3 for R, V, D</div>
+                                </div>
+                            </div>
+                            <div class="partner-mode-card" id="card-mode-expense-individual" onclick="setPartner4In1Mode('Expense', 'Individual')">
+                                <div class="mode-icon">🧾</div>
+                                <div class="mode-info">
+                                    <div class="mode-name">Individual Expense</div>
+                                    <div class="mode-desc">100% debited to one partner</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Individual Partner Selector (Shown when Individual mode is picked) -->
+                    <div class="form-group" id="group-partner-individual" style="display: none;">
+                        <label class="form-label">Select Partner Name *</label>
+                        <select id="ptr-partner-name" class="form-control" onchange="updatePartnerFormPreview()">
+                            <option value="R">Partner R</option>
+                            <option value="V">Partner V</option>
+                            <option value="D">Partner D</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Total Amount (₹) *</label>
+                            <input type="number" step="0.01" id="ptr-amount" class="form-control" placeholder="0.00" required oninput="updatePartnerFormPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Transaction Date *</label>
+                            <input type="date" id="ptr-date" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Live Calculation Feedback -->
+                    <div id="partner-calc-feedback" class="split-callout">
+                        <b>💡 3-Way Split:</b> Enter an amount to view the equal division into three for R, V, and D.
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description / Source / Purpose *</label>
+                        <input type="text" id="ptr-desc" class="form-control" placeholder="e.g. Client Web App Project Income or Office Expense" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Notes (Optional)</label>
+                        <input type="text" id="ptr-notes" class="form-control" placeholder="Internal settlement or reference notes...">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-partner')">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btn-submit-partner">Record Transaction</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
