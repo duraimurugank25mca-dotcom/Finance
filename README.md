@@ -157,21 +157,33 @@ flutter run
 
 ## 📸 Application Screenshots
 
-| Welcome Splash | Secure Login |
+| 1. Welcome Splash (3.5s Brand Transition) | 2. Secure Login Screen |
 | :---: | :---: |
-| ![Welcome Splash](frontend_web/screenshots/01_splash_welcome.png) | ![Login Screen](frontend_web/screenshots/02_login_screen.png) |
+| ![Welcome Splash](screenshots/01_splash_welcome.png) | ![Login Screen](screenshots/02_login_screen.png) |
 
-| Executive Dashboard | Partner Module (3-Way Split) |
+| 3. Executive Financial Dashboard | 4. Projects Contracts & Milestones |
 | :---: | :---: |
-| ![Executive Dashboard](frontend_web/screenshots/03_dashboard.png) | ![Partner Module](frontend_web/screenshots/08_partner_module.png) |
+| ![Executive Dashboard](screenshots/03_dashboard.png) | ![Projects](screenshots/04_projects.png) |
 
-| Projects Tracking | Invoices & Billing |
+| 5. Expenses Management & Proofs | 6. Income Records & Project Types |
 | :---: | :---: |
-| ![Projects](frontend_web/screenshots/04_projects.png) | ![Invoices](frontend_web/screenshots/07_invoices.png) |
+| ![Expenses](screenshots/05_expenses.png) | ![Income](screenshots/06_income.png) |
 
-| Partner 4-in-1 Process Modal | Financial Reports & Analytics |
+| 7. Invoices, Billing & Advance Deductions | 8. Partner Accounts (R, V, D) & 3-Way Split |
 | :---: | :---: |
-| ![Partner Modal](frontend_web/screenshots/09_partner_modal_4in1.png) | ![Reports](frontend_web/screenshots/11_reports.png) |
+| ![Invoices](screenshots/07_invoices.png) | ![Partner Module](screenshots/08_partner_module.png) |
+
+| 9. Partner 4-in-1 Process Modal | 10. Document Repository & Proofs |
+| :---: | :---: |
+| ![Partner Modal](screenshots/09_partner_modal_4in1.png) | ![Attachments](screenshots/10_attachments.png) |
+
+| 11. Financial Reports & Analytics | 12. User Management (Admin RBAC) |
+| :---: | :---: |
+| ![Reports](screenshots/11_reports.png) | ![User Management](screenshots/12_users_management.png) |
+
+| 13. Profile & Security Settings |
+| :---: |
+| ![Profile](screenshots/13_profile.png) |
 
 ---
 
