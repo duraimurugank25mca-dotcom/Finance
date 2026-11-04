@@ -155,7 +155,25 @@ flutter run
 
 ---
 
+## 📸 Application Screenshots
+
+| Welcome Splash | Secure Login |
+| :---: | :---: |
+| ![Welcome Splash](frontend_web/screenshots/01_splash_welcome.png) | ![Login Screen](frontend_web/screenshots/02_login_screen.png) |
+
+| Executive Dashboard | Partner Module (3-Way Split) |
+| :---: | :---: |
+| ![Executive Dashboard](frontend_web/screenshots/03_dashboard.png) | ![Partner Module](frontend_web/screenshots/08_partner_module.png) |
+
+| Projects Tracking | Invoices & Billing |
+| :---: | :---: |
+| ![Projects](frontend_web/screenshots/04_projects.png) | ![Invoices](frontend_web/screenshots/07_invoices.png) |
+
+| Partner 4-in-1 Process Modal | Financial Reports & Analytics |
+| :---: | :---: |
+| ![Partner Modal](frontend_web/screenshots/09_partner_modal_4in1.png) | ![Reports](frontend_web/screenshots/11_reports.png) |
+
+---
+
 ## 📄 License
 Duolink Finance &copy; 2026. All rights reserved.
-
-# Finance

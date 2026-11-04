@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Duolink Finance — Screenshots Gallery</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .active-tab {
+      background-color: #6366f1 !important;
+      color: #ffffff !important;
+      border-color: #6366f1 !important;
+    }
+  </style>
+</head>
+<body class="bg-transparent text-[var(--foreground)] antialiased p-4">
+  <div class="bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-2xl p-5 shadow-lg max-w-5xl mx-auto">
+    
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-[var(--border)]">
+      <div>
+        <h2 class="text-xl font-bold tracking-tight text-[var(--foreground)] flex items-center gap-2">
+          📸 Duolink Finance — Module Screenshots
+        </h2>
+        <p class="text-sm text-[var(--muted-foreground)] mt-0.5">
+          Interactive preview of all 13 live modules and interface screens
+        </p>
+      </div>
+      <div class="flex items-center gap-2">
+        <a id="open-full-link" href="http://localhost:5000/screenshots/01_splash_welcome.png" target="_blank"
+           class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[var(--primary)] text-white hover:opacity-90 transition">
+          ↗ Open Full Resolution
+        </a>
+      </div>
+    </div>
+
+    <!-- Thumbnail / Pill Tabs -->
+    <div class="flex gap-1.5 overflow-x-auto pb-3 mb-4 text-xs font-medium scrollbar-thin">
+      <button onclick="selectSlide(0)" class="tab-btn active-tab px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">1. Splash</button>
+      <button onclick="selectSlide(1)" class="tab-btn px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">2. Login</button>
+      <button onclick="selectSlide(2)" class="tab-btn px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">3. Dashboard</button>
+      <button onclick="selectSlide(3)" class="tab-btn px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">4. Projects</button>
+      <button onclick="selectSlide(4)" class="tab-btn px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">5. Expenses</button>
+      <button onclick="selectSlide(5)" class="tab-btn px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">6. Income</button>
+      <button onclick="selectSlide(6)" class="tab-btn px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">7. Invoices</button>
+      <button onclick="selectSlide(7)" class="tab-btn px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">8. Partner Module</button>
+      <button onclick="selectSlide(8)" class="tab-btn px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">9. 4-in-1 Modal</button>
+      <button onclick="selectSlide(9)" class="tab-btn px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">10. Attachments</button>
+      <button onclick="selectSlide(10)" class="tab-btn px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">11. Reports</button>
+      <button onclick="selectSlide(11)" class="tab-btn px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">12. Users</button>
+      <button onclick="selectSlide(12)" class="tab-btn px-3 py-1.5 rounded-lg border border-[var(--border)] whitespace-nowrap transition">13. Profile</button>
+    </div>
+
+    <!-- Active Screen Preview -->
+    <div class="relative bg-slate-950/20 border border-[var(--border)] rounded-xl overflow-hidden flex flex-col items-center justify-center min-h-[420px]">
+      <img id="main-screenshot" 
+           src="http://localhost:5000/screenshots/01_splash_welcome.png" 
+           alt="Module Screenshot"
+           class="w-full h-auto max-h-[620px] object-contain rounded-lg transition-all duration-300" />
+      
+      <!-- Caption Overlay -->
+      <div class="w-full p-3 bg-[var(--card)]/90 backdrop-blur-sm border-t border-[var(--border)] flex items-center justify-between">
+        <div>
+          <span id="screen-badge" class="text-xs font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 mr-2">Screen 1 of 13</span>
+          <span id="screen-title" class="text-sm font-semibold text-[var(--foreground)]">Welcome Splash Screen</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button onclick="prevSlide()" class="p-1.5 rounded-md border border-[var(--border)] hover:bg-[var(--accent)] text-xs transition">◀ Prev</button>
+          <button onclick="nextSlide()" class="p-1.5 rounded-md border border-[var(--border)] hover:bg-[var(--accent)] text-xs transition">Next ▶</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const screens = [
+      { file: '01_splash_welcome.png', title: '1. Welcome Splash Screen (3.5s Brand Transition)' },
+      { file: '02_login_screen.png', title: '2. Secure Authentication & Role Login' },
+      { file: '03_dashboard.png', title: '3. Financial Dashboard & Overview' },
+      { file: '04_projects.png', title: '4. Client Projects & Milestones' },
+      { file: '05_expenses.png', title: '5. Categorized Expenses & Receipt Uploads' },
+      { file: '06_income.png', title: '6. Cash Inflows & Project Income Records' },
+      { file: '07_invoices.png', title: '7. Itemized Invoicing, Advance Deduction & PDF Billing' },
+      { file: '08_partner_module.png', title: '8. Partner Accounts (R, V, D) & Live 3-Way Split Calculator' },
+      { file: '09_partner_modal_4in1.png', title: '9. Unified 4-in-1 Partner Transaction Process Modal' },
+      { file: '10_attachments.png', title: '10. Document Repository & Proof Verification' },
+      { file: '11_reports.png', title: '11. Annual/Monthly Financial Reports & CSV Export' },
+      { file: '12_users_management.png', title: '12. User Management & Granular Permissions (Admin)' },
+      { file: '13_profile.png', title: '13. User Profile & Password Security' }
+    ];
+
+    let currentIndex = 0;
+
+    function selectSlide(index) {
+      currentIndex = index;
+      const screen = screens[currentIndex];
+      const img = document.getElementById('main-screenshot');
+      const title = document.getElementById('screen-title');
+      const badge = document.getElementById('screen-badge');
+      const link = document.getElementById('open-full-link');
+      
+      const imgUrl = 'http://localhost:5000/screenshots/' + screen.file;
+      img.src = imgUrl;
+      title.textContent = screen.title;
+      badge.textContent = `Screen ${currentIndex + 1} of ${screens.length}`;
+      link.href = imgUrl;
+
+      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+        if (i === currentIndex) {
+          btn.classList.add('active-tab');
+        } else {
+          btn.classList.remove('active-tab');
+        }
+      });
+    }
+
+    function prevSlide() {
+      const newIdx = (currentIndex - 1 + screens.length) % screens.length;
+      selectSlide(newIdx);
+    }
+
+    function nextSlide() {
+      const newIdx = (currentIndex + 1) % screens.length;
+      selectSlide(newIdx);
+    }
+
+    // Keyboard arrow keys
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+    });
+  </script>
+</body>
+</html>
