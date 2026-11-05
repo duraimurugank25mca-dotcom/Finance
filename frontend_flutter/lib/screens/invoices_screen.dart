@@ -75,16 +75,14 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
   }
 
   Future<void> _openPdf(int invoiceId) async {
-    final url = Uri.parse('${ApiService.baseUrl}/invoices/$invoiceId/pdf');
     try {
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication);
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Could not launch PDF bill viewer.')),
-          );
-        }
+      final token = await ApiService.getToken();
+      final tokenQuery = token != null && token.isNotEmpty ? '?token=${Uri.encodeComponent(token)}' : '';
+      final url = Uri.parse('${ApiService.baseUrl}/invoices/$invoiceId/pdf$tokenQuery');
+
+      final launched = await launchUrl(url, mode: LaunchMode.externalApplication);
+      if (!launched) {
+        await launchUrl(url);
       }
     } catch (e) {
       if (mounted) {

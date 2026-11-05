@@ -35,6 +35,30 @@ async function authenticateToken(req, res, next) {
     }
 }
 
+// Optional Authentication (sets req.user if token valid, does not reject if missing)
+async function optionalAuth(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = (authHeader && authHeader.split(' ')[1]) || req.query.token;
+
+    if (!token) {
+        return next();
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'duolink_finance_secret_key');
+        const userRes = await query(
+            'SELECT id, email, full_name, role, partner_code, can_create_project, can_edit_records, can_delete_records, status FROM users WHERE id = $1',
+            [decoded.id]
+        );
+        if (userRes.rows.length > 0 && userRes.rows[0].status === 'active') {
+            req.user = userRes.rows[0];
+        }
+    } catch (err) {
+        // Proceed without error if token is invalid
+    }
+    next();
+}
+
 // Strictly Require Admin Role
 function requireAdmin(req, res, next) {
     if (!req.user || req.user.role !== 'Admin') {
@@ -94,6 +118,7 @@ async function requireProjectAccess(req, res, next) {
 
 module.exports = {
     authenticateToken,
+    optionalAuth,
     requireAdmin,
     requirePermission,
     requireProjectAccess,

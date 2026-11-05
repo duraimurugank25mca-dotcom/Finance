@@ -257,8 +257,8 @@ async function downloadInvoicePdf(req, res, next) {
 
         const invoice = invRes.rows[0];
 
-        // Access check
-        if (req.user.role !== 'Admin') {
+        // Access check (Admins and authorized project members have access; public links allowed)
+        if (req.user && req.user.role !== 'Admin') {
             const memberCheck = await query(
                 'SELECT * FROM project_members WHERE project_id = $1 AND user_id = $2',
                 [invoice.project_id, req.user.id]
@@ -275,6 +275,7 @@ async function downloadInvoicePdf(req, res, next) {
 
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `inline; filename="Duolink_Invoice_${invoice.invoice_number}.pdf"`);
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
 
         await generateInvoicePdf(invoice, res);
     } catch (err) {

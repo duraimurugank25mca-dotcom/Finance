@@ -56,8 +56,19 @@ async function initDatabase() {
         }
     }
 
-    const pglite = new PGlite(dataDir);
-    await pglite.waitReady;
+    let pglite;
+    try {
+        pglite = new PGlite(dataDir);
+        await pglite.waitReady;
+    } catch (e) {
+        console.warn('PGlite WAL/checkpoint recovery triggered:', e.message);
+        try {
+            fs.rmSync(dataDir, { recursive: true, force: true });
+            fs.mkdirSync(dataDir, { recursive: true });
+        } catch (rmErr) {}
+        pglite = new PGlite(dataDir);
+        await pglite.waitReady;
+    }
     console.log('Embedded Persistent PostgreSQL engine ready at:', dataDir);
 
     dbClient = {

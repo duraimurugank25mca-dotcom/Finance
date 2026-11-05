@@ -418,7 +418,7 @@ async function viewProjectDetails(id) {
                                         <td style="color:var(--accent-green); font-weight:700;">${formatCurrency(inv.payments_received)}</td>
                                         <td><span class="badge badge-blue">${inv.status}</span></td>
                                         <td>
-                                            <a class="btn btn-secondary btn-sm" href="/api/invoices/${inv.id}/pdf" target="_blank">📄 View PDF</a>
+                                            <a class="btn btn-secondary btn-sm" href="/api/invoices/${inv.id}/pdf${Api.getToken() ? '?token=' + encodeURIComponent(Api.getToken()) : ''}" target="_blank" onclick="openInvoicePdf(${inv.id}); return false;">📄 View PDF</a>
                                         </td>
                                     </tr>
                                 `
@@ -593,7 +593,7 @@ async function loadInvoices() {
                     <td style="color:var(--accent-red); font-weight:700;">${formatCurrency(inv.remaining_balance)}</td>
                     <td><span class="badge ${statusBadge}">${inv.status}</span></td>
                     <td style="display:flex; gap:6px;">
-                        <a href="/api/invoices/${inv.id}/pdf" target="_blank" class="btn btn-secondary btn-sm">
+                        <a href="/api/invoices/${inv.id}/pdf${Api.getToken() ? '?token=' + encodeURIComponent(Api.getToken()) : ''}" target="_blank" class="btn btn-secondary btn-sm" onclick="openInvoicePdf(${inv.id}); return false;">
                             📄 PDF Bill
                         </a>
                         ${
@@ -610,6 +610,18 @@ async function loadInvoices() {
             .join('');
     } catch (err) {
         showToast(err.message, 'error');
+    }
+}
+
+// Open Invoice PDF Bill Viewer
+function openInvoicePdf(invoiceId) {
+    if (!invoiceId) return;
+    const token = Api.getToken();
+    const tokenParam = token ? `?token=${encodeURIComponent(token)}` : '';
+    const url = `/api/invoices/${invoiceId}/pdf${tokenParam}`;
+    const win = window.open(url, '_blank');
+    if (!win) {
+        window.location.href = url;
     }
 }
 
@@ -1056,10 +1068,23 @@ function setupEventListeners() {
 
         try {
             const res = await Api.createInvoice(payload);
-            showToast(`Invoice ${res.data.invoice_number} created successfully!`, 'success');
+            const created = res.data;
             closeModal('modal-invoice');
             loadInvoices();
             loadDashboard();
+
+            const token = Api.getToken();
+            const tokenParam = token ? `?token=${encodeURIComponent(token)}` : '';
+            const pdfUrl = `/api/invoices/${created.id}/pdf${tokenParam}`;
+
+            showToast(`Invoice ${created.invoice_number} created successfully! <a href="${pdfUrl}" target="_blank" style="color:#ffffff; text-decoration:underline; font-weight:800; margin-left:8px;" onclick="openInvoicePdf(${created.id}); return false;">📄 View PDF</a>`, 'success');
+
+            // Open the generated PDF bill automatically
+            if (created && created.id) {
+                setTimeout(() => {
+                    openInvoicePdf(created.id);
+                }, 300);
+            }
         } catch (err) {
             showToast(err.message, 'error');
         }
