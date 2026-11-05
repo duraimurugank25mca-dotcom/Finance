@@ -1001,7 +1001,7 @@
     <div id="modal-expense" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Record Expense</h3>
+                <h3 class="modal-title">Add Expense</h3>
                 <button class="modal-close" onclick="closeModal('modal-expense')">&times;</button>
             </div>
             <form id="form-expense">
@@ -1017,11 +1017,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Expense Description *</label>
-                        <input type="text" id="exp-desc" class="form-control" placeholder="e.g. AWS Cloud Hosting Services" required>
-                    </div>
-
                     <div class="form-row">
                         <div class="form-group">
                             <label class="form-label">Expense Date *</label>
@@ -1032,10 +1027,11 @@
                             <select id="exp-method" class="form-control" required>
                                 <option value="Bank Transfer">Bank Transfer</option>
                                 <option value="Credit Card">Credit Card</option>
-                                <option value="Cash">Cash</option>
+                                <option value="Corporate Debit Card">Corporate Debit Card</option>
                                 <option value="UPI / Online">UPI / Online</option>
+                                <option value="Cash">Cash</option>
                                 <option value="Cheque">Cheque</option>
-                                <option value="Other">Other</option>
+                                <option value="Reimbursement">Employee Reimbursement</option>
                             </select>
                         </div>
                     </div>
@@ -1054,18 +1050,20 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="form-label">Expense Description *</label>
+                        <input type="text" id="exp-desc" class="form-control" placeholder="e.g. AWS Cloud Hosting Services" required>
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">Receipt / Voucher Attachment (PDF or Image)</label>
                         <input type="file" id="exp-receipt" class="form-control" accept=".jpg,.jpeg,.png,.webp,.pdf">
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Notes</label>
-                        <input type="text" id="exp-notes" class="form-control" placeholder="Additional notes...">
-                    </div>
+                    <input type="hidden" id="exp-notes" value="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('modal-expense')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Expense</button>
+                    <button type="submit" class="btn btn-primary">Add Expense</button>
                 </div>
             </form>
         </div>
