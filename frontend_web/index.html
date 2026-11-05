@@ -446,8 +446,8 @@
                                 </p>
                             </div>
                             <div style="display: flex; gap: 8px;">
-                                <button class="btn btn-secondary btn-sm" onclick="exportCsv('income')">
-                                    📥 Export CSV
+                                <button class="btn btn-secondary btn-sm" onclick="openExportExcelModal()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
+                                    <span style="font-size: 14px;">📊</span> Export Excel
                                 </button>
                                 <button class="btn btn-primary btn-sm" onclick="openIncomeModal()">
                                     + Add Income
@@ -1405,6 +1405,64 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('modal-partner')">Cancel</button>
                     <button type="submit" class="btn btn-primary" id="btn-submit-partner">Record Transaction</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 9. EXPORT FINANCIAL REPORT (EXCEL) MODAL -->
+    <div id="modal-export-excel" class="modal-overlay">
+        <div class="modal-card" style="max-width: 500px;">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(22, 163, 74, 0.12); color: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                        📊
+                    </div>
+                    <div>
+                        <h3 class="modal-title" style="margin: 0; font-size: 17px;">Export Financial Report</h3>
+                        <p style="margin: 2px 0 0 0; font-size: 12px; color: var(--text-secondary);">
+                            Download Microsoft Excel (.xlsx) workbook
+                        </p>
+                    </div>
+                </div>
+                <button class="modal-close" onclick="closeModal('modal-export-excel')">&times;</button>
+            </div>
+            <form id="form-export-excel" onsubmit="handleExportExcel(event)">
+                <div class="modal-body" style="padding: 20px 24px;">
+                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px 14px; margin-bottom: 18px;">
+                        <div style="font-weight: 700; font-size: 13px; color: #166534; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                            <span>📑</span> Complete 4-Sheet Financial Workbook
+                        </div>
+                        <p style="font-size: 12px; color: #15803d; margin: 0; line-height: 1.45;">
+                            Exports both <strong>Income & Advances</strong> and <strong>Expenses</strong> into a single Excel file, including an <strong>Executive Summary</strong> and <strong>Combined Ledger</strong>.
+                        </p>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label" style="font-weight: 700;">
+                            Select Date Up To Which You Need Data *
+                        </label>
+                        <input type="date" id="export-excel-upto-date" class="form-control" required style="font-size: 14px; font-weight: 600;">
+                        <small style="display: block; margin-top: 5px; color: var(--text-secondary); font-size: 11.5px;">
+                            Transactions on or before this date will be included in the report.
+                        </small>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 6px;">
+                        <label class="form-label" style="font-weight: 600; color: var(--text-secondary);">
+                            From Date (Optional)
+                        </label>
+                        <input type="date" id="export-excel-from-date" class="form-control" style="font-size: 14px;">
+                        <small style="display: block; margin-top: 5px; color: var(--text-secondary); font-size: 11.5px;">
+                            Leave empty to export all historical records up to the selected date.
+                        </small>
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding: 14px 24px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); background: #fafafa;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-export-excel')">Cancel</button>
+                    <button type="submit" id="btn-submit-export-excel" class="btn btn-primary" style="background: #16a34a; border-color: #16a34a; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                        <span>📥</span> Download Excel (.xlsx)
+                    </button>
                 </div>
             </form>
         </div>

@@ -4,7 +4,7 @@ const { query } = require('../config/db');
 // Authenticate JWT Token
 async function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    const token = (authHeader && authHeader.split(' ')[1]) || req.query.token;
 
     if (!token) {
         return res.status(401).json({ success: false, message: 'Authentication required. No token provided.' });

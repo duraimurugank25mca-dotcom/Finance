@@ -46,6 +46,16 @@ async function initDatabase() {
         fs.mkdirSync(dataDir, { recursive: true });
     }
 
+    // Clean up stale postmaster.pid from abnormal shutdowns if present
+    const pidFile = path.join(dataDir, 'postmaster.pid');
+    if (fs.existsSync(pidFile)) {
+        try {
+            fs.unlinkSync(pidFile);
+        } catch (e) {
+            // Ignore if in use
+        }
+    }
+
     const pglite = new PGlite(dataDir);
     await pglite.waitReady;
     console.log('Embedded Persistent PostgreSQL engine ready at:', dataDir);

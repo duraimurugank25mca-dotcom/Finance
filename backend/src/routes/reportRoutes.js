@@ -8,5 +8,6 @@ router.use(authenticateToken);
 router.get('/dashboard-summary', reportController.getDashboardSummary);
 router.get('/financial-reports', reportController.getFinancialReports);
 router.get('/export-csv', reportController.exportReportCsv);
+router.get('/export-excel', reportController.exportReportExcel);
 
 module.exports = router;

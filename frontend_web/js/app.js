@@ -1198,6 +1198,93 @@ function exportCsv(type) {
     window.location.href = `/api/reports/export-csv?type=${type}`;
 }
 
+function openExportExcelModal() {
+    const modal = document.getElementById('modal-export-excel');
+    if (!modal) return;
+    
+    // Set default upto date to today (YYYY-MM-DD)
+    const today = new Date().toISOString().split('T')[0];
+    const uptoInput = document.getElementById('export-excel-upto-date');
+    if (uptoInput) {
+        uptoInput.value = today;
+    }
+    const fromInput = document.getElementById('export-excel-from-date');
+    if (fromInput) {
+        fromInput.value = '';
+    }
+    
+    openModal('modal-export-excel');
+}
+
+function closeExportExcelModal() {
+    closeModal('modal-export-excel');
+}
+
+async function handleExportExcel(event) {
+    if (event) event.preventDefault();
+    const uptoInput = document.getElementById('export-excel-upto-date');
+    const uptoDate = uptoInput ? uptoInput.value : '';
+    const fromInput = document.getElementById('export-excel-from-date');
+    const fromDate = fromInput ? fromInput.value : '';
+
+    if (!uptoDate) {
+        showToast('Please select a date up to which you need the data.', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('btn-submit-export-excel');
+    const originalHtml = btn ? btn.innerHTML : '';
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳</span> Generating Excel...';
+    }
+
+    try {
+        const token = Api.getToken();
+        let url = `/api/reports/export-excel?upto_date=${encodeURIComponent(uptoDate)}`;
+        if (fromDate) {
+            url += `&from_date=${encodeURIComponent(fromDate)}`;
+        }
+        if (token) {
+            url += `&token=${encodeURIComponent(token)}`;
+        }
+
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const response = await fetch(url, { headers });
+
+        if (!response.ok) {
+            let errorMsg = `Server returned status ${response.status}`;
+            try {
+                const errData = await response.json();
+                if (errData && errData.message) errorMsg = errData.message;
+            } catch (e) {}
+            throw new Error(errorMsg);
+        }
+
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = downloadUrl;
+        a.download = `Duolink_Financial_Report_Upto_${uptoDate}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(downloadUrl);
+        a.remove();
+
+        showToast('Excel report downloaded successfully!', 'success');
+        closeModal('modal-export-excel');
+    } catch (err) {
+        console.error('Excel Export Error:', err);
+        showToast('Export failed: ' + err.message, 'error');
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+        }
+    }
+}
+
 function quickFill(email, pw) {
     document.getElementById('login-email').value = email;
     document.getElementById('login-password').value = pw;
