@@ -669,6 +669,7 @@ body {
 
 .modal-body {
     padding: 20px 22px;
+    background: #FFFFFF;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
