@@ -124,8 +124,32 @@ async function switchTestRole() {
     document.getElementById('btn-login').click();
 }
 
+// Mobile Sidebar Drawer Toggle
+function toggleMobileSidebar(forceState) {
+    const sidebar = document.getElementById('app-sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (!sidebar || !backdrop) return;
+
+    const isOpen = sidebar.classList.contains('open');
+    const newState = typeof forceState === 'boolean' ? forceState : !isOpen;
+
+    if (newState) {
+        sidebar.classList.add('open');
+        backdrop.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    } else {
+        sidebar.classList.remove('open');
+        backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
 // Navigation Router
 function navigateTo(viewName) {
+    if (window.innerWidth <= 900) {
+        toggleMobileSidebar(false);
+    }
+
     // Hide all views
     document.querySelectorAll('.page-view').forEach((el) => (el.style.display = 'none'));
 

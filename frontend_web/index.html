@@ -71,11 +71,17 @@
     <!-- 2. MAIN APP LAYOUT (When Authenticated) -->
     <div id="app-screen" class="app-layout" style="display: none;">
         
+        <!-- Mobile Sidebar Backdrop Overlay -->
+        <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="toggleMobileSidebar(false)"></div>
+
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="app-sidebar">
             <div class="brand-header">
-                <img src="assets/logo.png" alt="Duolink Finance Logo" class="brand-logo-img">
-                <div class="brand-title">DUOLINK <span>FINANCE</span></div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="assets/logo.png" alt="Duolink Finance Logo" class="brand-logo-img">
+                    <div class="brand-title">DUOLINK <span>FINANCE</span></div>
+                </div>
+                <button class="sidebar-close-btn" onclick="toggleMobileSidebar(false)" aria-label="Close menu">&times;</button>
             </div>
 
             <ul class="nav-links">
@@ -164,7 +170,12 @@
         <div class="main-wrapper">
             <!-- Top Header -->
             <header class="top-header">
-                <h2 class="header-title" id="page-title">Dashboard Overview</h2>
+                <div class="header-left">
+                    <button id="btn-sidebar-toggle" class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Toggle navigation">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    </button>
+                    <h2 class="header-title" id="page-title">Dashboard Overview</h2>
+                </div>
                 <div class="header-actions">
                     <button class="btn btn-outline btn-sm" id="btn-quick-switch-role" onclick="switchTestRole()">
                         🔄 Switch to User
