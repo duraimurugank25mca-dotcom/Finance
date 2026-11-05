@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/models.dart';
 import '../services/api_service.dart';
+import '../services/export_service.dart';
 import '../theme/app_theme.dart';
 
 class InvoicesScreen extends StatefulWidget {
@@ -100,6 +101,11 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
       appBar: AppBar(
         title: const Text('Bills & Invoices'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.table_chart_outlined),
+            tooltip: 'Export Excel Report',
+            onPressed: () => ExportService.showExportExcelModal(context),
+          ),
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _fetchInvoices,

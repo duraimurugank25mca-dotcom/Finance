@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/models.dart';
 import '../services/api_service.dart';
+import '../services/export_service.dart';
 import '../theme/app_theme.dart';
 import 'login_screen.dart';
 import 'projects_screen.dart';
@@ -98,6 +99,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: const Text('Duolink Finance'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.table_chart_outlined),
+            tooltip: 'Export Excel Report',
+            onPressed: () => ExportService.showExportExcelModal(context),
+          ),
+          IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _loadData,
           ),
@@ -166,6 +172,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (_) => const InvoicesScreen()));
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.table_chart_outlined, color: Color(0xFF16A34A)),
+              title: const Text('Export Excel Report', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF16A34A))),
+              subtitle: const Text('Income, Advances & Expenses (.xlsx)', style: TextStyle(fontSize: 11)),
+              onTap: () {
+                Navigator.pop(context);
+                ExportService.showExportExcelModal(context);
               },
             ),
             if (user.isAdmin) ...[

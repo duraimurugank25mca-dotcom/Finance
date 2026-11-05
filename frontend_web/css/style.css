@@ -1206,6 +1206,7 @@ body {
         width: 100%;
         display: flex;
         gap: 6px;
+        flex-wrap: wrap;
     }
     .header-actions .btn {
         flex: 1;
