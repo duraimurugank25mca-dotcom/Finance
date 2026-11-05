@@ -132,10 +132,10 @@ async function runMigrationsAndSeed() {
         user2Id = user2Check.rows[0].id;
     }
 
-    // 4. Seed Projects if none exist
+    // 4. Seed Projects if explicitly requested
     const projectCount = await query('SELECT COUNT(*) as count FROM projects');
     let p1Id = 1, p2Id = 2, p3Id = 3;
-    if (parseInt(projectCount.rows[0].count, 10) === 0) {
+    if (process.env.SEED_DEMO_DATA === 'true' && parseInt(projectCount.rows[0].count, 10) === 0) {
         console.log('Seeding initial projects and financial accounts...');
 
         // Project 1: Cloud Migration
@@ -325,9 +325,9 @@ async function runMigrationsAndSeed() {
 
     }
 
-    // 7. Seed Expenses if none exist
+    // 7. Seed Expenses if explicitly requested
     const expenseCount = await query('SELECT COUNT(*) as count FROM expenses');
-    if (parseInt(expenseCount.rows[0].count, 10) === 0) {
+    if (process.env.SEED_DEMO_DATA === 'true' && parseInt(expenseCount.rows[0].count, 10) === 0) {
         console.log('Seeding initial company & project expenses...');
         const expensesSeed = [
             {
@@ -415,9 +415,9 @@ async function runMigrationsAndSeed() {
         console.log('Sample expenses seeding complete!');
     }
 
-    // 8. Seed Partner Transactions (R, V, D)
+    // 8. Seed Partner Transactions if explicitly requested
     const partnerCountRes = await query('SELECT COUNT(*) as count FROM partner_transactions');
-    if (parseInt(partnerCountRes.rows[0].count, 10) === 0) {
+    if (process.env.SEED_DEMO_DATA === 'true' && parseInt(partnerCountRes.rows[0].count, 10) === 0) {
         const partnerSeeds = [
             {
                 code: 'PTR-101',
