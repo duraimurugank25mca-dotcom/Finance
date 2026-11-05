@@ -15,7 +15,7 @@ async function authenticateToken(req, res, next) {
         
         // Fetch fresh user record from database
         const userRes = await query(
-            'SELECT id, email, full_name, role, can_create_project, can_edit_records, can_delete_records, status FROM users WHERE id = $1',
+            'SELECT id, email, full_name, role, partner_code, can_create_project, can_edit_records, can_delete_records, status FROM users WHERE id = $1',
             [decoded.id]
         );
 

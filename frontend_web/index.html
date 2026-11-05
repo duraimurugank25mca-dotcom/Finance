@@ -55,13 +55,16 @@
             </form>
 
             <div class="quick-login-pills">
-                <div class="quick-login-title">Quick Demo Login:</div>
-                <div style="display: flex; gap: 8px;">
-                    <button type="button" class="quick-login-btn" onclick="quickFill('admin@duolink.com', 'Admin@123')">
-                        👑 Admin (Full Access)
+                <div class="quick-login-title">Quick Partner Admin Sign In:</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                    <button type="button" class="quick-login-btn" onclick="quickFill('d@duolink.com', 'Admin@123')" style="border-color: #f59e0b; color: #b45309; font-weight: 700;">
+                        🌟 Partner D
                     </button>
-                    <button type="button" class="quick-login-btn" onclick="quickFill('user@duolink.com', 'User@123')">
-                        👤 User (Alex Rivera)
+                    <button type="button" class="quick-login-btn" onclick="quickFill('r@duolink.com', 'Admin@123')" style="border-color: #3b82f6; color: #1d4ed8; font-weight: 700;">
+                        👔 Partner R
+                    </button>
+                    <button type="button" class="quick-login-btn" onclick="quickFill('v@duolink.com', 'Admin@123')" style="border-color: #10b981; color: #047857; font-weight: 700;">
+                        💼 Partner V
                     </button>
                 </div>
             </div>
@@ -183,9 +186,12 @@
                     <h2 class="header-title" id="page-title">Dashboard Overview</h2>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-outline btn-sm" id="btn-quick-switch-role" onclick="switchTestRole()">
-                        🔄 Switch to User
-                    </button>
+                    <div class="partner-quick-switch" style="display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.03); padding: 2px 6px; border-radius: 8px; border: 1px solid var(--border-color);" title="Switch Logged-in Partner Admin">
+                        <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-right: 2px;">Partner:</span>
+                        <button type="button" id="switch-partner-d" class="btn btn-sm" onclick="switchPartnerAdmin('d@duolink.com')" style="padding: 3px 8px; font-size: 11px; font-weight: 800; border-radius: 6px;">D</button>
+                        <button type="button" id="switch-partner-r" class="btn btn-sm" onclick="switchPartnerAdmin('r@duolink.com')" style="padding: 3px 8px; font-size: 11px; font-weight: 800; border-radius: 6px;">R</button>
+                        <button type="button" id="switch-partner-v" class="btn btn-sm" onclick="switchPartnerAdmin('v@duolink.com')" style="padding: 3px 8px; font-size: 11px; font-weight: 800; border-radius: 6px;">V</button>
+                    </div>
                     <button class="btn btn-secondary btn-sm" onclick="openExportExcelModal()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: #166534; background: #f0fdf4; border-color: #bbf7d0;">
                         <span>📊</span> Export Excel
                     </button>
@@ -203,6 +209,35 @@
 
                 <!-- 1. DASHBOARD VIEW -->
                 <div id="view-dashboard" class="page-view">
+                    <!-- Partner Priority Spotlight Banner (D first when D logs in!) -->
+                    <div id="dashboard-partner-spotlight" class="card" style="margin-bottom: 24px; border: 1.5px solid var(--border-color); background: #ffffff;">
+                        <div class="card-body" style="padding: 18px 24px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div id="spotlight-avatar" class="partner-avatar d" style="width: 44px; height: 44px; font-size: 18px;">D</div>
+                                    <div>
+                                        <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary);" id="spotlight-role-badge">
+                                            Logged In Account: Partner D (Admin)
+                                        </div>
+                                        <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: var(--primary-900);" id="spotlight-title">
+                                            Partner D Financial Summary
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn btn-secondary btn-sm" onclick="navigateTo('partners')">
+                                        View Full Partner Details →
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Dynamic Partner Summary Cards Ordered for Logged-In Partner -->
+                            <div id="spotlight-cards-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="stats-grid">
                         <div class="stat-card income">
                             <div class="stat-header">
@@ -555,11 +590,11 @@
                         </div>
                     </div>
 
-                    <!-- 4 Summary KPI Cards: Combined + Partner R + Partner V + Partner D -->
-                    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                    <!-- 4 Summary KPI Cards: Combined + Partner R + Partner V + Partner D (Ordered by Logged-in Partner) -->
+                    <div class="stats-grid" id="partner-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
                         
                         <!-- Combined Partnership Card -->
-                        <div class="partner-card">
+                        <div class="partner-card" id="card-partner-comb">
                             <div class="partner-card-header">
                                 <div style="display: flex; align-items: center; gap: 12px;">
                                     <div class="partner-avatar combined">🤝</div>
@@ -585,7 +620,7 @@
                         </div>
 
                         <!-- Partner R Card -->
-                        <div class="partner-card">
+                        <div class="partner-card" id="card-partner-r">
                             <div class="partner-card-header">
                                 <div style="display: flex; align-items: center; gap: 12px;">
                                     <div class="partner-avatar r">R</div>
@@ -594,7 +629,7 @@
                                         <div style="font-size: 11px; color: var(--text-muted);">Share: 33.33% + Individual</div>
                                     </div>
                                 </div>
-                                <span class="badge" style="background:#EDE9FE; color:#6D28D9;">Partner R</span>
+                                <span class="badge" id="badge-partner-r" style="background:#EDE9FE; color:#6D28D9;">Partner R</span>
                             </div>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12.5px;">
                                 <span style="color: var(--text-secondary);">Income Share:</span>
@@ -611,7 +646,7 @@
                         </div>
 
                         <!-- Partner V Card -->
-                        <div class="partner-card">
+                        <div class="partner-card" id="card-partner-v">
                             <div class="partner-card-header">
                                 <div style="display: flex; align-items: center; gap: 12px;">
                                     <div class="partner-avatar v">V</div>
@@ -620,7 +655,7 @@
                                         <div style="font-size: 11px; color: var(--text-muted);">Share: 33.33% + Individual</div>
                                     </div>
                                 </div>
-                                <span class="badge" style="background:#D1FAE5; color:#065F46;">Partner V</span>
+                                <span class="badge" id="badge-partner-v" style="background:#D1FAE5; color:#065F46;">Partner V</span>
                             </div>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12.5px;">
                                 <span style="color: var(--text-secondary);">Income Share:</span>
@@ -637,7 +672,7 @@
                         </div>
 
                         <!-- Partner D Card -->
-                        <div class="partner-card">
+                        <div class="partner-card" id="card-partner-d">
                             <div class="partner-card-header">
                                 <div style="display: flex; align-items: center; gap: 12px;">
                                     <div class="partner-avatar d">D</div>
@@ -646,7 +681,7 @@
                                         <div style="font-size: 11px; color: var(--text-muted);">Share: 33.33% + Individual</div>
                                     </div>
                                 </div>
-                                <span class="badge" style="background:#FEF3C7; color:#92400E;">Partner D</span>
+                                <span class="badge" id="badge-partner-d" style="background:#FEF3C7; color:#92400E;">Partner D</span>
                             </div>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12.5px;">
                                 <span style="color: var(--text-secondary);">Income Share:</span>

@@ -2,7 +2,8 @@ class UserModel {
   final int id;
   final String email;
   final String fullName;
-  final String role; // 'Admin' or 'User'
+  final String role; // 'Admin'
+  final String? partnerCode; // 'D', 'R', 'V', or 'ALL'
   final bool canCreateProject;
   final bool canEditRecords;
   final bool canDeleteRecords;
@@ -12,6 +13,7 @@ class UserModel {
     required this.email,
     required this.fullName,
     required this.role,
+    this.partnerCode,
     this.canCreateProject = false,
     this.canEditRecords = false,
     this.canDeleteRecords = false,
@@ -24,7 +26,8 @@ class UserModel {
       id: json['id'] ?? 0,
       email: json['email'] ?? '',
       fullName: json['fullName'] ?? json['full_name'] ?? '',
-      role: json['role'] ?? 'User',
+      role: json['role'] ?? 'Admin',
+      partnerCode: json['partnerCode'] ?? json['partner_code'],
       canCreateProject: json['canCreateProject'] ?? json['can_create_project'] ?? false,
       canEditRecords: json['canEditRecords'] ?? json['can_edit_records'] ?? false,
       canDeleteRecords: json['canDeleteRecords'] ?? json['can_delete_records'] ?? false,

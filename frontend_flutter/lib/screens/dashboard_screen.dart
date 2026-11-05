@@ -127,7 +127,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(color: AppTheme.primary),
               accountName: Text(user.fullName, style: const TextStyle(fontWeight: FontWeight.w800)),
-              accountEmail: Text('${user.email} (${user.role})'),
+              accountEmail: Text('${user.email} • ${user.partnerCode != null ? "Partner ${user.partnerCode} Admin" : "Admin"}'),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Text(
@@ -225,28 +225,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                         margin: const EdgeInsets.only(bottom: 16),
                         decoration: BoxDecoration(
-                          color: user.isAdmin ? AppTheme.primaryBackground : const Color(0xFFFEF3C7),
+                          color: AppTheme.primaryBackground,
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: user.isAdmin ? const Color(0xFFBFDBFE) : const Color(0xFFFDE68A),
+                            color: const Color(0xFFBFDBFE),
                           ),
                         ),
                         child: Row(
                           children: [
-                            Icon(
-                              user.isAdmin ? Icons.admin_panel_settings : Icons.person_outline,
+                            const Icon(
+                              Icons.verified_user_rounded,
                               size: 18,
-                              color: user.isAdmin ? AppTheme.primary : const Color(0xFFB45309),
+                              color: AppTheme.primary,
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              user.isAdmin
-                                  ? 'Logged in as Admin (Full System Access)'
-                                  : 'Logged in as User (Restricted to Authorized Projects)',
-                              style: TextStyle(
+                              user.partnerCode != null && user.partnerCode != 'ALL'
+                                  ? 'Logged in as Partner ${user.partnerCode} (Admin Full Access)'
+                                  : 'Logged in as Admin (Full System Access)',
+                              style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
-                                color: user.isAdmin ? AppTheme.primary : const Color(0xFFB45309),
+                                color: AppTheme.primary,
                               ),
                             ),
                           ],

@@ -12,7 +12,7 @@ async function login(req, res, next) {
         }
 
         const userRes = await query(
-            'SELECT id, email, password_hash, full_name, role, can_create_project, can_edit_records, can_delete_records, status FROM users WHERE LOWER(email) = LOWER($1)',
+            'SELECT id, email, password_hash, full_name, role, partner_code, can_create_project, can_edit_records, can_delete_records, status FROM users WHERE LOWER(email) = LOWER($1)',
             [email.trim()]
         );
 
@@ -38,6 +38,7 @@ async function login(req, res, next) {
                 email: user.email,
                 role: user.role,
                 fullName: user.full_name,
+                partnerCode: user.partner_code || null,
             },
             process.env.JWT_SECRET || 'duolink_finance_secret_key',
             { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
@@ -49,7 +50,7 @@ async function login(req, res, next) {
             action: 'LOGIN',
             entityType: 'user',
             entityId: user.id,
-            details: `User logged in with role: ${user.role}`,
+            details: `User logged in with role: ${user.role} (${user.partner_code || 'General'})`,
             req,
         });
 
@@ -62,6 +63,7 @@ async function login(req, res, next) {
                 email: user.email,
                 fullName: user.full_name,
                 role: user.role,
+                partnerCode: user.partner_code || null,
                 canCreateProject: user.can_create_project,
                 canEditRecords: user.can_edit_records,
                 canDeleteRecords: user.can_delete_records,
@@ -82,6 +84,7 @@ async function getProfile(req, res, next) {
                 email: req.user.email,
                 fullName: req.user.full_name,
                 role: req.user.role,
+                partnerCode: req.user.partner_code || null,
                 canCreateProject: req.user.can_create_project,
                 canEditRecords: req.user.can_edit_records,
                 canDeleteRecords: req.user.can_delete_records,

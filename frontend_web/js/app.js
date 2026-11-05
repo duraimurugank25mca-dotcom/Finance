@@ -85,16 +85,29 @@ function showLoginSplashScreen(callback) {
     }
 }
 
+function getActivePartnerCode() {
+    if (!currentUser) return 'D';
+    if (currentUser.partnerCode) return currentUser.partnerCode.toUpperCase();
+    if (currentUser.email) {
+        const em = currentUser.email.toLowerCase();
+        if (em.startsWith('d@') || em.includes('partner.d')) return 'D';
+        if (em.startsWith('r@') || em.includes('partner.r')) return 'R';
+        if (em.startsWith('v@') || em.includes('partner.v')) return 'V';
+    }
+    return 'D';
+}
+
 function renderAuthenticatedApp() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app-screen').style.display = 'flex';
 
     // Update User metadata in UI
+    const partnerCode = getActivePartnerCode();
     document.getElementById('sidebar-user-name').textContent = currentUser.fullName;
-    document.getElementById('sidebar-avatar').textContent = currentUser.fullName.charAt(0).toUpperCase();
+    document.getElementById('sidebar-avatar').textContent = partnerCode;
 
     const roleBadge = document.getElementById('sidebar-role-badge');
-    roleBadge.textContent = currentUser.role;
+    roleBadge.textContent = `${currentUser.role} (${partnerCode})`;
     roleBadge.className = `user-role-badge role-${currentUser.role.toLowerCase()}`;
 
     // Admin vs User Role Visibility
@@ -103,10 +116,16 @@ function renderAuthenticatedApp() {
         el.style.display = currentUser.role === 'Admin' ? '' : 'none';
     });
 
-    const switchBtn = document.getElementById('btn-quick-switch-role');
-    if (switchBtn) {
-        switchBtn.textContent = currentUser.role === 'Admin' ? '🔄 Switch to User' : '🔄 Switch to Admin';
-    }
+    // Style active partner button in header
+    ['d', 'r', 'v'].forEach(p => {
+        const btn = document.getElementById(`switch-partner-${p}`);
+        if (btn) {
+            const isActive = partnerCode === p.toUpperCase();
+            btn.style.background = isActive ? (p === 'd' ? '#f59e0b' : (p === 'r' ? '#3b82f6' : '#10b981')) : 'transparent';
+            btn.style.color = isActive ? '#ffffff' : 'var(--text-primary)';
+            btn.style.border = isActive ? 'none' : '1px solid transparent';
+        }
+    });
 
     // Load initial views
     navigateTo('dashboard');
@@ -114,14 +133,17 @@ function renderAuthenticatedApp() {
     loadProjectsDropdown();
 }
 
-// Quick Switch Role for instant testing
-async function switchTestRole() {
-    if (currentUser.role === 'Admin') {
-        quickFill('user@duolink.com', 'User@123');
-    } else {
-        quickFill('admin@duolink.com', 'Admin@123');
+// Quick Switch Partner Admin (D, R, V)
+async function switchPartnerAdmin(email) {
+    try {
+        const res = await Api.login(email, 'Admin@123');
+        Api.setSession(res.token, res.user);
+        currentUser = res.user;
+        showToast(`Signed in as ${res.user.fullName} (${res.user.role})`, 'success');
+        renderAuthenticatedApp();
+    } catch (err) {
+        showToast(err.message, 'error');
     }
-    document.getElementById('btn-login').click();
 }
 
 // Mobile Sidebar Drawer Toggle
@@ -229,6 +251,9 @@ async function loadDashboard() {
         document.getElementById('stat-project-income').textContent = formatCurrency(d.total_project_income);
         document.getElementById('stat-project-expenses').textContent = formatCurrency(d.total_project_expenses);
         document.getElementById('stat-project-profit').textContent = formatCurrency(d.project_profit);
+
+        // Load Partner Spotlight on Dashboard
+        loadPartnerSummary();
 
         // Recent Income Table
         const incomeTbody = document.getElementById('table-recent-income');
@@ -1376,9 +1401,133 @@ async function loadPartnerSummary() {
             dNet.textContent = formatCurrency(d.partners.D.net_balance);
             dNet.style.color = d.partners.D.net_balance >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
         }
+
+        // Dynamic ordering: D first when D logs in, after that R and V!
+        arrangePartnerCards();
+
+        // Render Spotlight on Dashboard as well
+        renderDashboardPartnerSpotlight(d);
     } catch (err) {
         showToast(err.message, 'error');
     }
+}
+
+function arrangePartnerCards() {
+    const partnerCode = getActivePartnerCode();
+    const container = document.getElementById('partner-cards-grid');
+    if (!container) return;
+
+    const cardD = document.getElementById('card-partner-d');
+    const cardR = document.getElementById('card-partner-r');
+    const cardV = document.getElementById('card-partner-v');
+    const cardComb = document.getElementById('card-partner-comb');
+
+    if (!cardD || !cardR || !cardV || !cardComb) return;
+
+    const badgeD = document.getElementById('badge-partner-d');
+    const badgeR = document.getElementById('badge-partner-r');
+    const badgeV = document.getElementById('badge-partner-v');
+
+    if (badgeD) {
+        badgeD.textContent = partnerCode === 'D' ? '⭐ Partner D (You)' : 'Partner D';
+        badgeD.style.fontWeight = partnerCode === 'D' ? '800' : '700';
+    }
+    if (badgeR) {
+        badgeR.textContent = partnerCode === 'R' ? '⭐ Partner R (You)' : 'Partner R';
+        badgeR.style.fontWeight = partnerCode === 'R' ? '800' : '700';
+    }
+    if (badgeV) {
+        badgeV.textContent = partnerCode === 'V' ? '⭐ Partner V (You)' : 'Partner V';
+        badgeV.style.fontWeight = partnerCode === 'V' ? '800' : '700';
+    }
+
+    cardD.style.border = partnerCode === 'D' ? '2.5px solid #f59e0b' : '1px solid var(--border-color)';
+    cardR.style.border = partnerCode === 'R' ? '2.5px solid #3b82f6' : '1px solid var(--border-color)';
+    cardV.style.border = partnerCode === 'V' ? '2.5px solid #10b981' : '1px solid var(--border-color)';
+
+    // Dynamic sequence: when D logs in, D first, after that R and V!
+    if (partnerCode === 'D') {
+        container.appendChild(cardD);
+        container.appendChild(cardR);
+        container.appendChild(cardV);
+        container.appendChild(cardComb);
+    } else if (partnerCode === 'R') {
+        container.appendChild(cardR);
+        container.appendChild(cardV);
+        container.appendChild(cardD);
+        container.appendChild(cardComb);
+    } else if (partnerCode === 'V') {
+        container.appendChild(cardV);
+        container.appendChild(cardR);
+        container.appendChild(cardD);
+        container.appendChild(cardComb);
+    }
+}
+
+function renderDashboardPartnerSpotlight(partnerData) {
+    const container = document.getElementById('spotlight-cards-container');
+    if (!container || !partnerData || !partnerData.partners) return;
+
+    const partnerCode = getActivePartnerCode();
+    const avatarEl = document.getElementById('spotlight-avatar');
+    const roleBadgeEl = document.getElementById('spotlight-role-badge');
+    const titleEl = document.getElementById('spotlight-title');
+
+    if (avatarEl) {
+        avatarEl.className = `partner-avatar ${partnerCode.toLowerCase()}`;
+        avatarEl.textContent = partnerCode;
+    }
+    if (roleBadgeEl) {
+        roleBadgeEl.textContent = `Logged In Account: Partner ${partnerCode} (Admin)`;
+    }
+    if (titleEl) {
+        titleEl.textContent = `Partner ${partnerCode} Priority Financial Snapshot`;
+    }
+
+    // Determine partner ordering: when D logs in, D first, after that R and V!
+    let order = ['D', 'R', 'V'];
+    if (partnerCode === 'R') order = ['R', 'V', 'D'];
+    if (partnerCode === 'V') order = ['V', 'R', 'D'];
+
+    const partnerMeta = {
+        D: { name: 'Partner D', color: '#d97706', bg: '#fef3c7', border: '#f59e0b' },
+        R: { name: 'Partner R', color: '#6d28d9', bg: '#ede9fe', border: '#8b5cf6' },
+        V: { name: 'Partner V', color: '#047857', bg: '#d1fae5', border: '#10b981' }
+    };
+
+    container.innerHTML = order.map((code, index) => {
+        const p = partnerData.partners[code] || { total_income: 0, total_expense: 0, net_balance: 0 };
+        const meta = partnerMeta[code];
+        const isSelf = code === partnerCode;
+
+        return `
+            <div style="background: ${isSelf ? '#ffffff' : '#f8fafc'}; border: ${isSelf ? '2.5px solid ' + meta.border : '1px solid var(--border-color)'}; border-radius: 12px; padding: 14px 16px; position: relative;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="partner-avatar ${code.toLowerCase()}" style="width: 24px; height: 24px; font-size: 11px;">${code}</span>
+                        <span style="font-weight: 800; font-size: 13.5px; color: var(--primary-900);">${meta.name}</span>
+                    </div>
+                    <span class="badge" style="background: ${meta.bg}; color: ${meta.color}; font-size: 10.5px; font-weight: 800;">
+                        ${isSelf ? '⭐ You (' + code + ')' : (index === 0 ? 'Priority' : 'Partner ' + code)}
+                    </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11.5px; margin-bottom: 4px;">
+                    <span style="color: var(--text-secondary);">Income Share:</span>
+                    <span style="font-weight: 700; color: var(--accent-green);">${formatCurrency(p.total_income)}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11.5px; margin-bottom: 6px;">
+                    <span style="color: var(--text-secondary);">Expense Share:</span>
+                    <span style="font-weight: 700; color: var(--accent-red);">${formatCurrency(p.total_expense)}</span>
+                </div>
+                <div style="padding-top: 6px; border-top: 1px dashed var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 12px; font-weight: 700;">Net Balance:</span>
+                    <span style="font-size: 15px; font-weight: 800; color: ${p.net_balance >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'};">
+                        ${formatCurrency(p.net_balance)}
+                    </span>
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 async function loadPartnerTransactions() {

@@ -31,6 +31,7 @@ async function runMigrationsAndSeed() {
     try {
         await query('ALTER TABLE income_transactions ADD COLUMN IF NOT EXISTS project_type VARCHAR(100)');
         await query('ALTER TABLE income_transactions ADD COLUMN IF NOT EXISTS project_details TEXT');
+        await query('ALTER TABLE users ADD COLUMN IF NOT EXISTS partner_code VARCHAR(10)');
     } catch (e) {
         // Ignored if already exists
     }
@@ -86,50 +87,44 @@ async function runMigrationsAndSeed() {
     }
     console.log('Expense categories verified.');
 
-    // 3. Seed Users (Admin and User)
-    const adminCheck = await query('SELECT id FROM users WHERE email = $1', ['admin@duolink.com']);
-    let adminId;
-    if (adminCheck.rows.length === 0) {
-        const adminHash = await bcrypt.hash('Admin@123', 10);
-        const res = await query(
-            `INSERT INTO users (email, password_hash, full_name, role, can_create_project, can_edit_records, can_delete_records, status)
-             VALUES ($1, $2, $3, 'Admin', TRUE, TRUE, TRUE, 'active') RETURNING id`,
-            ['admin@duolink.com', adminHash, 'Duolink Admin']
-        );
-        adminId = res.rows[0].id;
-        console.log('Created Admin account: admin@duolink.com / Admin@123');
-    } else {
-        adminId = adminCheck.rows[0].id;
-    }
+    // 3. Seed Three Admin Logins for Partners R, V, and D (Regular user logins removed)
+    try {
+        await query("DELETE FROM users WHERE role = 'User' OR email IN ('user@duolink.com', 'sarah.finance@duolink.com')");
+    } catch (e) {}
 
-    const userCheck = await query('SELECT id FROM users WHERE email = $1', ['user@duolink.com']);
-    let userId;
-    if (userCheck.rows.length === 0) {
-        const userHash = await bcrypt.hash('User@123', 10);
-        const res = await query(
-            `INSERT INTO users (email, password_hash, full_name, role, can_create_project, can_edit_records, can_delete_records, status)
-             VALUES ($1, $2, $3, 'User', FALSE, TRUE, FALSE, 'active') RETURNING id`,
-            ['user@duolink.com', userHash, 'Alex Rivera']
-        );
-        userId = res.rows[0].id;
-        console.log('Created User account: user@duolink.com / User@123');
-    } else {
-        userId = userCheck.rows[0].id;
-    }
+    const adminHash = await bcrypt.hash('Admin@123', 10);
+    const partnerAdmins = [
+        { email: 'd@duolink.com', name: 'Partner D', code: 'D' },
+        { email: 'r@duolink.com', name: 'Partner R', code: 'R' },
+        { email: 'v@duolink.com', name: 'Partner V', code: 'V' },
+        { email: 'admin@duolink.com', name: 'Master Admin', code: 'ALL' },
+    ];
 
-    const user2Check = await query('SELECT id FROM users WHERE email = $1', ['sarah.finance@duolink.com']);
-    let user2Id;
-    if (user2Check.rows.length === 0) {
-        const user2Hash = await bcrypt.hash('Sarah@123', 10);
-        const res = await query(
-            `INSERT INTO users (email, password_hash, full_name, role, can_create_project, can_edit_records, can_delete_records, status)
-             VALUES ($1, $2, $3, 'User', FALSE, FALSE, FALSE, 'active') RETURNING id`,
-            ['sarah.finance@duolink.com', user2Hash, 'Sarah Jenkins']
-        );
-        user2Id = res.rows[0].id;
-        console.log('Created User account: sarah.finance@duolink.com / Sarah@123');
-    } else {
-        user2Id = user2Check.rows[0].id;
+    let adminId = 1, userId = 1;
+    for (const pa of partnerAdmins) {
+        const check = await query('SELECT id FROM users WHERE LOWER(email) = LOWER($1)', [pa.email]);
+        if (check.rows.length === 0) {
+            const res = await query(
+                `INSERT INTO users (email, password_hash, full_name, role, partner_code, can_create_project, can_edit_records, can_delete_records, status)
+                 VALUES ($1, $2, $3, 'Admin', $4, TRUE, TRUE, TRUE, 'active') RETURNING id`,
+                [pa.email, adminHash, pa.name, pa.code]
+            );
+            if (pa.email === 'admin@duolink.com' || pa.email === 'd@duolink.com') {
+                adminId = res.rows[0].id;
+                userId = res.rows[0].id;
+            }
+            console.log(`Created Admin account: ${pa.email} (${pa.name}) / Admin@123`);
+        } else {
+            await query(
+                `UPDATE users SET role = 'Admin', partner_code = $1, full_name = $2, can_create_project = TRUE, can_edit_records = TRUE, can_delete_records = TRUE, status = 'active'
+                 WHERE id = $3`,
+                [pa.code, pa.name, check.rows[0].id]
+            );
+            if (pa.email === 'admin@duolink.com' || pa.email === 'd@duolink.com') {
+                adminId = check.rows[0].id;
+                userId = check.rows[0].id;
+            }
+        }
     }
 
     // 4. Seed Projects if explicitly requested

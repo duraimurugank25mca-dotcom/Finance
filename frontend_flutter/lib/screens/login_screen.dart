@@ -12,7 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController(text: 'admin@duolink.com');
+  final _emailController = TextEditingController(text: 'd@duolink.com');
   final _passwordController = TextEditingController(text: 'Admin@123');
   bool _isLoading = false;
   String? _errorMessage;
@@ -175,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const Divider(),
                       const SizedBox(height: 10),
                       const Text(
-                        'Quick Demo Accounts:',
+                        'Select Partner Admin Login:',
                         style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.textSecondary),
                       ),
                       const SizedBox(height: 8),
@@ -183,15 +183,32 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: () => _quickFill('admin@duolink.com', 'Admin@123'),
-                              child: const Text('Admin', style: TextStyle(fontSize: 12)),
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                                side: const BorderSide(color: Color(0xFFD97706), width: 1.5),
+                              ),
+                              onPressed: () => _quickFill('d@duolink.com', 'Admin@123'),
+                              child: const Text('🌟 Partner D', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFFD97706))),
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 6),
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: () => _quickFill('user@duolink.com', 'User@123'),
-                              child: const Text('User', style: TextStyle(fontSize: 12)),
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                              ),
+                              onPressed: () => _quickFill('r@duolink.com', 'Admin@123'),
+                              child: const Text('👔 Partner R', style: TextStyle(fontSize: 11)),
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                              ),
+                              onPressed: () => _quickFill('v@duolink.com', 'Admin@123'),
+                              child: const Text('💼 Partner V', style: TextStyle(fontSize: 11)),
                             ),
                           ),
                         ],
