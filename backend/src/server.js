@@ -27,9 +27,10 @@ async function startServer() {
             console.log(` Live Portal Interface: http://localhost:${PORT}/`);
             console.log(` API Endpoint:          http://localhost:${PORT}/api`);
             console.log('----------------------------------------------------');
-            console.log(' Default Login Credentials:');
-            console.log(' Admin: admin@duolink.com / Admin@123');
-            console.log(' User:  user@duolink.com  / User@123');
+            console.log(' Partner Admin Logins:');
+            console.log(' Partner D: d@duolink.com / Admin@123');
+            console.log(' Partner R: r@duolink.com / Admin@123');
+            console.log(' Partner V: v@duolink.com / Admin@123');
             console.log('====================================================');
         });
     } catch (err) {
